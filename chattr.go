@@ -20,10 +20,10 @@ Example to set the immutable attribute to a file:
 package chattr
 
 import (
-    "os"
-    "syscall"
-    "unsafe"
-    "runtime"
+	"os"
+	"runtime"
+	"syscall"
+	"unsafe"
 )
 
 /*
@@ -61,8 +61,8 @@ Request flags differs on 32/64 bit arhitecture.
 These variables are assigned on runtime.
 */
 var (
-    FS_IOC_GETFLAGS uintptr
-    FS_IOC_SETFLAGS uintptr
+	FS_IOC_GETFLAGS uintptr
+	FS_IOC_SETFLAGS uintptr
 )
 
 /*
@@ -70,16 +70,16 @@ Change between x86-64 and x86-32.
 */
 func init() {
 
-    if runtime.GOARCH == "amd64" {
+	if runtime.GOARCH == "amd64" {
 
-        FS_IOC_GETFLAGS = uintptr(0x80086601)
-        FS_IOC_SETFLAGS = uintptr(0x40086602)
+		FS_IOC_GETFLAGS = uintptr(0x80086601)
+		FS_IOC_SETFLAGS = uintptr(0x40086602)
 
-    } else if runtime.GOARCH == "386" {
+	} else if runtime.GOARCH == "386" {
 
-        FS_IOC_GETFLAGS = uintptr(0x80046601)
-        FS_IOC_SETFLAGS = uintptr(0x40046602)
-    }
+		FS_IOC_GETFLAGS = uintptr(0x80046601)
+		FS_IOC_SETFLAGS = uintptr(0x40046602)
+	}
 }
 
 func ioctl(f *os.File, request uintptr, attrp *int32) error {
@@ -112,13 +112,13 @@ SetAttr sets the attribute of a file.
 */
 func SetAttr(f *os.File, attr int32) error {
 
-    attrs, err := GetAttr(f)
+	attrs, err := GetAttr(f)
 
-    if err != nil {
-        return err
-    }
+	if err != nil {
+		return err
+	}
 
-    attrs = attrs + attr
+	attrs = attrs + attr
 
 	return ioctl(f, FS_IOC_SETFLAGS, &attrs)
 
@@ -129,13 +129,13 @@ UnsetAttr unsets the attribute of a file.
 */
 func UnsetAttr(f *os.File, attr int32) error {
 
-    attrs, err := GetAttr(f)
+	attrs, err := GetAttr(f)
 
-    if err != nil {
-        return err
-    }
+	if err != nil {
+		return err
+	}
 
-    attrs = attrs - attr
+	attrs = attrs - attr
 
 	return ioctl(f, FS_IOC_SETFLAGS, &attrs)
 }
