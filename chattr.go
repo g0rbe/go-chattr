@@ -122,7 +122,7 @@ func UnsetAttr(f *os.File, attr int32) error {
 		return err
 	}
 
-	attrs ^= attr
+	attrs ^= (attrs & attr)
 
 	return ioctl(f, FS_IOC_SETFLAGS, &attrs)
 }
