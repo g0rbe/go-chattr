@@ -1,3 +1,3 @@
 module github.com/g0rbe/go-chattr
 
-go 1.18
+go 1.17
